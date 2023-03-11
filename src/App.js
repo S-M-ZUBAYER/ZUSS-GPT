@@ -70,7 +70,7 @@ function App() {
   };
   return (
     <main class="container">
-      <div class="chats">
+      <div class="chats ml-5">
         {qna.map((qna) => {
           if (qna.from === YOU) {
             return (
@@ -108,14 +108,14 @@ function App() {
         )}
       </div>
 
-      <div class="chat-input">
+      <div className="chat-input ml-20 border-2 pl-3">
         <input
           type="text"
           ref={inputRef}
           class="form-control col"
           placeholder="Type Something"
         />
-        <button disabled={loading} class="btn btn-success" onClick={handleSend}>
+        <button disabled={loading} className="border-2 px-5 py-1 bg-yellow-200 " onClick={handleSend}>
           Send
         </button>
       </div>
