@@ -43,12 +43,11 @@ function App() {
 
   const handleSend = () => {
     const question = inputRef.current.value;
-    console.log('what is react js')
     updateQNA(YOU, question);
 
     setLoading(true);
     axios
-      .post("http://localhost:5000/chat", {
+      .post("https://zuss-gpt-server.vercel.app/chat", {
         question,
       })
       .then((response) => {
@@ -70,6 +69,12 @@ function App() {
   };
   return (
     <main class="container">
+    <div className="text-center mt-12 text-2xl font-semibold">
+      ZUSS GPT
+      <p className="text-lg text-yellow-500">
+        Please ask me any question I will try to answer like ChatGPT:
+      </p>
+    </div>
       <div class="chats ml-5">
         {qna.map((qna) => {
           if (qna.from === YOU) {
@@ -108,11 +113,11 @@ function App() {
         )}
       </div>
 
-      <div className="chat-input ml-20 border-2 pl-3">
+      <div className="chat-input ml-0 md:ml-20 border-2">
         <input
           type="text"
           ref={inputRef}
-          class="form-control col"
+          class="form-control col pl-3"
           placeholder="Type Something"
         />
         <button disabled={loading} className="border-2 px-5 py-1 bg-yellow-200 " onClick={handleSend}>
