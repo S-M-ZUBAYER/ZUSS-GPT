@@ -41,13 +41,18 @@ function App() {
     setQna((qna) => [...qna, { from, value }]);
   };
 
+
+  
+
+  
   const handleSend = () => {
     const question = inputRef.current.value;
+    inputRef.current.value="";
     updateQNA(YOU, question);
 
     setLoading(true);
     axios
-      .post("https://zuss-gpt-server.vercel.app/chat", {
+      .post("https://zuss-gpt-server-s-m-zubayer.vercel.app/chat", {
         question,
       })
       .then((response) => {
@@ -67,6 +72,8 @@ function App() {
 
     return <p className="message-text">{value}</p>;
   };
+
+
   return (
     <main class="container">
     <div className="text-center mt-12 text-2xl font-semibold">
