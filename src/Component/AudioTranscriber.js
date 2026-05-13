@@ -1,5 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
+import { buildChatBotUrl } from "../config/api";
+
+const CATEGORY_ROUTES = {
+    "attendance machine": "attendanceMachine",
+    "manual attendance machine": "manualAttendanceMachine",
+    "thermal printer": "thermalPrinter",
+    "dot printer": "dotPrinter",
+    "face attendance": "faceAttendance",
+    "device face attendance machine": "deviceFaceAttendanceMachine",
+    "power bank": "powerBank",
+};
 
 const AudioTranscriber = () => {
     const [file, setFile] = useState(null);
@@ -23,23 +34,9 @@ const AudioTranscriber = () => {
         }
 
         setLoading(true);
-        const baseLocal = "http://localhost:5000/tht/chatBot";
-        const baseLive = "https://grozziie.zjweiting.com:8035/tht/chatBot";
-
-        const apiUrl =
-            category === "attendance machine"
-                ? `${baseLive}/attendanceMachine/transcribe`
-                : category === "manual attendance machine"
-                    ? `${baseLive}/manualAttendanceMachine/transcribe`
-                : category === "thermal printer"
-                    ? `${baseLive}/thermalPrinter/transcribe`
-                    : category === "dot printer"
-                        ? `${baseLive}/dotPrinter/transcribe`
-                        : category === "face attendance"
-                            ? `${baseLive}/faceAttendance/transcribe`
-                            : category === "power bank"
-                                ? `${baseLive}/powerBank/transcribe`
-                                : `${baseLocal}/transcribe`;
+        const apiUrl = CATEGORY_ROUTES[category]
+            ? buildChatBotUrl(CATEGORY_ROUTES[category], "transcribe")
+            : buildChatBotUrl("transcribe");
 
 
         try {
@@ -87,6 +84,7 @@ const AudioTranscriber = () => {
                 <option value="thermal printer">Thermal Printer</option>
                 <option value="dot printer">Dot Printer</option>
                 <option value="face attendance">Face Attendance</option>
+                <option value="device face attendance machine">Device Face Attendance Machine</option>
                 <option value="power bank">Power Bank</option>
             </select>
 

@@ -1,5 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
+import { buildChatBotUrl } from "../config/api";
+
+const CATEGORY_ROUTES = {
+    "attendance machine": "attendanceMachine",
+    "manual attendance machine": "manualAttendanceMachine",
+    "thermal printer": "thermalPrinter",
+    "dot printer": "dotPrinter",
+    "face attendance": "faceAttendance",
+    "device face attendance machine": "deviceFaceAttendanceMachine",
+    "power bank": "powerBank",
+};
 
 const ImageAnalyzer = () => {
     const [image, setImage] = useState(null);
@@ -28,23 +39,9 @@ const ImageAnalyzer = () => {
         }
 
         setLoading(true);
-        const baseLocal = "http://localhost:5000/tht/chatBot";
-        const baseLive = "https://grozziie.zjweiting.com:8035/tht/chatBot";
-
-        const apiUrl =
-            category === "attendance machine"
-                ? `${baseLive}/attendanceMachine/analyzeImage`
-                : category === "manual attendance machine"
-                    ? `${baseLive}/manualAttendanceMachine/analyzeImage`
-                : category === "thermal printer"
-                    ? `${baseLive}/thermalPrinter/analyzeImage`
-                    : category === "dot printer"
-                        ? `${baseLive}/dotPrinter/analyzeImage`
-                        : category === "face attendance"
-                            ? `${baseLive}/faceAttendance/analyzeImage`
-                            : category === "power bank"
-                                ? `${baseLive}/powerBank/analyzeImage`
-                                : `${baseLocal}/analyze-image`;
+        const apiUrl = CATEGORY_ROUTES[category]
+            ? buildChatBotUrl(CATEGORY_ROUTES[category], "analyzeImage")
+            : buildChatBotUrl("analyze-image");
 
         const formData = new FormData();
         formData.append("image", image);
@@ -97,6 +94,7 @@ const ImageAnalyzer = () => {
                 <option value="thermal printer">Thermal Printer</option>
                 <option value="dot printer">Dot Printer</option>
                 <option value="face attendance">Face Attendance</option>
+                <option value="device face attendance machine">Device Face Attendance Machine</option>
                 <option value="power bank">Power Bank</option>
             </select>
 

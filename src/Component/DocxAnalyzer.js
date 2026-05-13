@@ -1,4 +1,15 @@
 import React, { useState } from "react";
+import { buildChatBotUrl } from "../config/api";
+
+const CATEGORIES = [
+    { label: "Attendance Machine", value: "attendance machine", route: "attendanceMachine" },
+    { label: "Manual Attendance Machine", value: "manual attendance machine", route: "manualAttendanceMachine" },
+    { label: "Thermal Printer", value: "thermal printer", route: "thermalPrinter" },
+    { label: "Dot Printer", value: "dot printer", route: "dotPrinter" },
+    { label: "Face Attendance", value: "face attendance", route: "faceAttendance" },
+    { label: "Device Face Attendance Machine", value: "device face attendance machine", route: "deviceFaceAttendanceMachine" },
+    { label: "Power Bank", value: "power bank", route: "powerBank" },
+];
 
 export default function DocxUploader() {
     const [file, setFile] = useState(null);
@@ -18,7 +29,7 @@ export default function DocxUploader() {
             setFile(null);
             setModal({
                 show: true,
-                message: "⚠️ Please select a valid DOCX file.",
+                message: "Please select a valid DOCX file.",
                 success: false,
             });
         }
@@ -28,7 +39,17 @@ export default function DocxUploader() {
         if (!file) {
             setModal({
                 show: true,
-                message: "❌ No file selected. Please upload a DOCX file.",
+                message: "No file selected. Please upload a DOCX file.",
+                success: false,
+            });
+            return;
+        }
+
+        const selectedCategory = CATEGORIES.find((item) => item.value === category);
+        if (!selectedCategory) {
+            setModal({
+                show: true,
+                message: "Please select a category.",
                 success: false,
             });
             return;
@@ -36,36 +57,17 @@ export default function DocxUploader() {
 
         const formData = new FormData();
         formData.append("docxFile", file);
-        formData.append("category", category);
+        formData.append("category", selectedCategory.label);
 
         setLoading(true);
 
-        const baseLocal = "http://localhost:5000/tht/chatBot";
-        const baseLive = "https://grozziie.zjweiting.com:8035/tht/chatBot";
-
-        const apiUrl =
-            category === "attendance machine"
-                ? `${baseLive}/attendanceMachine/extractText`
-                : category === "manual attendance machine"
-                    ? `${baseLive}/manualAttendanceMachine/extractText`
-                : category === "thermal printer"
-                    ? `${baseLive}/thermalPrinter/extractText`
-                    : category === "dot printer"
-                        ? `${baseLive}/dotPrinter/extractText`
-                        : category === "face attendance"
-                            ? `${baseLive}/faceAttendance/extractText`
-                            : category === "power bank"
-                                ? `${baseLive}/powerBank/extractText`
-                                : `${baseLocal}/extract-text`;
+        const apiUrl = buildChatBotUrl(selectedCategory.route, "extractText");
 
         try {
-            const response = await fetch(
-                apiUrl,
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                body: formData,
+            });
 
             const rawText = await response.text();
             let data;
@@ -78,20 +80,20 @@ export default function DocxUploader() {
             if (response.ok && data.success) {
                 setModal({
                     show: true,
-                    message: `✅ ${category.toUpperCase()} section updated successfully!`,
+                    message: `Success. ${selectedCategory.label} section updated successfully!`,
                     success: true,
                 });
 
                 setFile(null);
                 document.querySelector('input[type="file"]').value = "";
             } else {
-                throw new Error(data.error || "Unknown error occurred.");
+                throw new Error(data.error || data.message || `Request failed with status ${response.status}.`);
             }
         } catch (error) {
             console.error("Error uploading file:", error);
             setModal({
                 show: true,
-                message: "❌ Failed to upload docx: ",
+                message: `Failed to upload docx: ${error.message}`,
                 success: false,
             });
         } finally {
@@ -113,12 +115,11 @@ export default function DocxUploader() {
                     className="mt-1 w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="">Select Category</option>
-                    <option value="attendance machine">Attendance Machine</option>
-                    <option value="manual attendance machine">Manual Attendance Machine</option>
-                    <option value="thermal printer">Thermal Printer</option>
-                    <option value="dot printer">Dot Printer</option>
-                    <option value="face attendance">Face Attendance</option>
-                    <option value="power bank">Power Bank</option>
+                    {CATEGORIES.map((item) => (
+                        <option key={item.value} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
                 </select>
             </label>
 
@@ -142,7 +143,6 @@ export default function DocxUploader() {
                 {loading ? "Uploading..." : "Upload & Extract Text"}
             </button>
 
-            {/* ✅ MODAL NOTIFICATION */}
             {modal.show && (
                 <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
                     <div
@@ -155,7 +155,7 @@ export default function DocxUploader() {
                             onClick={closeModal}
                             className="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-xl"
                         >
-                            ×
+                            x
                         </button>
                         <h3
                             className={`font-semibold mb-2 ${modal.success ? "text-green-700" : "text-red-700"

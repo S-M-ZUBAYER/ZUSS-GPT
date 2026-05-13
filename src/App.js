@@ -908,6 +908,7 @@ import "./App.css";
 import axios from "axios";
 import faceAttendanceLogo from "./Assest/faceAttendanceLogo.png";
 import customerLogo from "./Assest/customerLogo.jpg";
+import { API_BASE_URL } from "./config/api";
 
 // Components
 import ImageAnalyzer from "./Component/ImageAnalyzer";
@@ -919,8 +920,7 @@ import DocxAnalyzer from "./Component/DocxAnalyzer";
 // Constants
 const CONSTANTS = {
   API: {
-    // BASE_URL: "http://localhost:5000/tht",
-    BASE_URL: "https://grozziie.zjweiting.com:8035/tht",
+    BASE_URL: API_BASE_URL,
     ENDPOINTS: {
       TEST: "/test",
     }
@@ -950,6 +950,11 @@ const CONSTANTS = {
       name: "Face Attendance",
       endpoint: "/chatBot/faceAttendance/chat/gpt",
       storageKey: "faceAttendanceChatHistory"
+    },
+    DEVICE_FACE_ATTENDANCE_MACHINE: {
+      name: "Device Face Attendance Machine",
+      endpoint: "/chatBot/deviceFaceAttendanceMachine/chat/gpt",
+      storageKey: "deviceFaceAttendanceMachineChatHistory"
     },
     POWER_BANK: {
       name: "Power Bank",
@@ -1148,23 +1153,40 @@ const ChatMessage = ({ message }) => {
         <div className="bg-white p-4 rounded-2xl rounded-bl-none shadow-lg border border-gray-100">
           <div className="content">
             {message.content.split('\n').map((line, index) => {
-              const urlMatch = line.match(/(http[s]?:\/\/[^\s]+)/i);
+              const urlParts = line.split(/(https?:\/\/[^\s]+)/gi);
+              const hasUrl = urlParts.some((part) => /^https?:\/\//i.test(part));
               const isBold = line.match(/^(Step \d+:|Setting the Alarm)/);
 
-              if (urlMatch) {
-                const url = urlMatch[0];
-                const isVideo = url.endsWith('.mp4');
-
+              if (hasUrl) {
                 return (
-                  <a
+                  <p
                     key={index}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm rounded-full hover:from-blue-700 hover:to-blue-800 transition-all shadow-md"
+                    className={`${isBold
+                      ? 'font-bold text-gray-800 mb-2'
+                      : 'text-gray-700 mb-2'
+                      } leading-relaxed`}
                   >
-                    {getLocalizedLinkText(message.lang, isVideo)}
-                  </a>
+                    {urlParts.map((part, partIndex) => {
+                      if (!/^https?:\/\//i.test(part)) {
+                        return part;
+                      }
+
+                      const url = part;
+                      const isVideo = url.toLowerCase().endsWith('.mp4');
+
+                      return (
+                        <a
+                          key={`${index}-${partIndex}`}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 mx-1 mt-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm rounded-full hover:from-blue-700 hover:to-blue-800 transition-all shadow-md"
+                        >
+                          {getLocalizedLinkText(message.lang, isVideo)}
+                        </a>
+                      );
+                    })}
+                  </p>
                 );
               }
 
@@ -1403,7 +1425,7 @@ const ChatPage = ({ selectedProduct }) => {
 const FileUploadCard = ({ title, description, icon, children }) => (
   <div className="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
     <div className="p-6">
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center justify-center gap-3 mb-4">
         <div className="text-2xl">{icon}</div>
         <div>
           <h3 className="font-bold text-gray-800 text-lg">{title}</h3>
@@ -1425,25 +1447,21 @@ const BackendPage = () => (
           Upload and analyze various file types with our AI-powered tools
         </p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
-        <FileUploadCard
+      <div>
+         <FileUploadCard
           title="Document Analysis"
           description="Upload and analyze DOCX files"
           icon="📄"
         >
           <DocxAnalyzer />
         </FileUploadCard>
-        <FileUploadCard
-          title="Text Analysis"
-          description="Analyze and process text content"
-          icon="📝"
-        >
-          <AppendTextInfo />
-        </FileUploadCard>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="">
+    
+      </div>
+
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <FileUploadCard
           title="PDF Analysis"
           description="Upload and analyze PDF documents"
@@ -1465,7 +1483,7 @@ const BackendPage = () => (
         >
           <AudioTranscriber />
         </FileUploadCard>
-      </div>
+      </div> */}
     </div>
   </div>
 );
