@@ -928,37 +928,37 @@ const CONSTANTS = {
   PRODUCTS: {
     ATTENDANCE_MACHINE: {
       name: "Bluetooth Attendance Machine",
-      endpoint: "/chatBot/attendanceMachine/chat/gpt",
+      endpoint: "/chatBot/attendanceMachine/chat/gpt/no-store",
       storageKey: "attendanceMachineChatHistory"
     },
     MANUAL_ATTENDANCE_MACHINE: {
       name: "Manual Attendance Machine",
-      endpoint: "/chatBot/manualAttendanceMachine/chat/gpt",
+      endpoint: "/chatBot/manualAttendanceMachine/chat/gpt/no-store",
       storageKey: "manualAttendanceMachineChatHistory"
     },
     DOT_PRINTER: {
       name: "Dot Printer",
-      endpoint: "/chatBot/dotPrinter/chat/gpt",
+      endpoint: "/chatBot/dotPrinter/chat/gpt/no-store",
       storageKey: "dotPrinterChatHistory"
     },
     THERMAL_PRINTER: {
       name: "Thermal Printer",
-      endpoint: "/chatBot/thermalPrinter/chat/gpt",
+      endpoint: "/chatBot/thermalPrinter/chat/gpt/no-store",
       storageKey: "thermalPrinterChatHistory"
     },
     Face_ATTENDANCE: {
       name: "Face Attendance",
-      endpoint: "/chatBot/faceAttendance/chat/gpt",
+      endpoint: "/chatBot/faceAttendance/chat/gpt/no-store",
       storageKey: "faceAttendanceChatHistory"
     },
     DEVICE_FACE_ATTENDANCE_MACHINE: {
       name: "Device Face Attendance Machine",
-      endpoint: "/chatBot/deviceFaceAttendanceMachine/chat/gpt",
+      endpoint: "/chatBot/deviceFaceAttendanceMachine/chat/gpt/no-store",
       storageKey: "deviceFaceAttendanceMachineChatHistory"
     },
     POWER_BANK: {
       name: "Power Bank",
-      endpoint: "/chatBot/powerBank/chat/gpt",
+      endpoint: "/chatBot/powerBank/chat/gpt/no-store",
       storageKey: "powerBankChatHistory"
     }
 
