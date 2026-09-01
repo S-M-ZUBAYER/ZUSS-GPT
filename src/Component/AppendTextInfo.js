@@ -7,6 +7,9 @@ const CATEGORY_ROUTES = {
     "thermal printer": "thermalPrinter",
     "dot printer": "dotPrinter",
     "face attendance": "faceAttendance",
+    "face attendance website": "faceAttendanceWebsite",
+    "warehouse erp": "warehouseErp",
+    "warehouse erp app site": "warehouseErpAppSite",
     "device face attendance machine": "deviceFaceAttendanceMachine",
     "power bank": "powerBank",
 };
@@ -95,6 +98,9 @@ const AppendTextInfo = () => {
                     <option value="thermal printer">Thermal Printer</option>
                     <option value="dot printer">Dot Printer</option>
                     <option value="face attendance">Face Attendance</option>
+                    <option value="face attendance website">Face Attendance Website</option>
+                    <option value="warehouse erp">Warehouse ERP</option>
+                    <option value="warehouse erp app site">Warehouse ERP App Site</option>
                     <option value="device face attendance machine">Device Face Attendance Machine</option>
                     <option value="power bank">Power Bank</option>
                 </select>

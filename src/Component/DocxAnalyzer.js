@@ -7,6 +7,9 @@ const CATEGORIES = [
     { label: "Thermal Printer", value: "thermal printer", route: "thermalPrinter" },
     { label: "Dot Printer", value: "dot printer", route: "dotPrinter" },
     { label: "Face Attendance", value: "face attendance", route: "faceAttendance" },
+    { label: "Face Attendance Website", value: "face attendance website", route: "faceAttendanceWebsite" },
+    { label: "Warehouse ERP", value: "warehouse erp", route: "warehouseErp" },
+    { label: "Warehouse ERP App Site", value: "warehouse erp app site", route: "warehouseErpAppSite" },
     { label: "Device Face Attendance Machine", value: "device face attendance machine", route: "deviceFaceAttendanceMachine" },
     { label: "Power Bank", value: "power bank", route: "powerBank" },
 ];

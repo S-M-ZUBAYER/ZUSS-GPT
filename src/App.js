@@ -951,6 +951,21 @@ const CONSTANTS = {
       endpoint: "/chatBot/faceAttendance/chat/gpt/no-store",
       storageKey: "faceAttendanceChatHistory"
     },
+    FACE_ATTENDANCE_WEBSITE: {
+      name: "Face Attendance Website",
+      endpoint: "/chatBot/faceAttendanceWebsite/chat/gpt/no-store",
+      storageKey: "faceAttendanceWebsiteChatHistory"
+    },
+    WAREHOUSE_ERP: {
+      name: "Warehouse ERP",
+      endpoint: "/chatBot/warehouseErp/chat/gpt/no-store",
+      storageKey: "warehouseErpChatHistory"
+    },
+    WAREHOUSE_ERP_APP_SITE: {
+      name: "Warehouse ERP App Site",
+      endpoint: "/chatBot/warehouseErpAppSite/chat/gpt/no-store",
+      storageKey: "warehouseErpAppSiteChatHistory"
+    },
     DEVICE_FACE_ATTENDANCE_MACHINE: {
       name: "Device Face Attendance Machine",
       endpoint: "/chatBot/deviceFaceAttendanceMachine/chat/gpt/no-store",
